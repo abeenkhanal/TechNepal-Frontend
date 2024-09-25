@@ -9,7 +9,7 @@ const Cart = () => {
     const dispatch = useDispatch()
     const {items : products} = useSelector((state)=>state.cart)
     console.log(products,"herer")
-    const totalItemsInCart = products.reduce((total,item)=>item.quantity + total ,0)
+    const totalItemsInCart = products.reduce((total,item)=>Number(item.quantity )+ Number(total) ,0)
     let tamount=0
     const totalAmountOfCart = products.map((amount,item)=>{
 console.log(amount.quantity * amount.product?amount.product.productPrice:0 ,amount.product.productPrice*amount.quantity,"hhrhehre")
@@ -49,9 +49,9 @@ console.log(tamount,"here")
             </div>
             <div className="mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6">
               <div className="flex items-center border-gray-100">
-                <span className="cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-blue-500 hover:text-blue-50" onClick={()=>handleQuantityChange(product.product._id,product.product, product.quantity - 1)}> - </span>
-                <input className="h-8 w-8 border bg-white text-center text-xs outline-none" type="number" value={product.quantity} min="1" onChange={(e)=>handleQuantityChange(product.product._id,product.product,e.target.value)}/>
-                <span className="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50" onClick={()=>handleQuantityChange(product.product._id,product.product, product.quantity + 1)}> + </span>
+                <span className="cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-blue-500 hover:text-blue-50" onClick={()=>handleQuantityChange(product.product._id,product.product, Number(product.quantity) - 1)}> - </span>
+                <input className="h-8 w-8 border bg-white text-center text-xs outline-none" type="number" value={Number(product.quantity)} min="1" onChange={(e)=>handleQuantityChange(product.product._id,product.product,e.target.value)}/>
+                <span className="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50" onClick={()=>handleQuantityChange(product.product._id,product.product, Number(product.quantity) + 1)}> + </span>
               </div>
               <div className="flex items-center space-x-4" onClick={()=>handleDelete(product.product._id)}>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="h-5 w-5 cursor-pointer duration-150 hover:text-red-500">
