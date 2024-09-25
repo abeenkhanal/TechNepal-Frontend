@@ -4,8 +4,8 @@ const Team = () => {
   const team = [
     {
       name: 'Abin Khanal',
-      role: 'Backend Developer',
-      img: 'https://images.pexels.com/photos/5358943/pexels-photo-5358943.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1', 
+      role: 'Fullstack Developer',
+      img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQznfsP1RKJTku2AIp03Yd67Crntwg2XdWADg&s', 
     },
     {
       name: 'Ishwar Bohara',
