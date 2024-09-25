@@ -19,8 +19,14 @@ console.log(tamount)
     })
 console.log(tamount,"here")
     
-    const handleQuantityChange = (productId, newQuantity)=>{
-      dispatch(updateCartItem(productId, newQuantity))
+    const handleQuantityChange = (productId,product, newQuantity)=>{
+      console.log(productId,'djshgdjsgh',"dsds",product)
+      if(newQuantity<=product.productStockQty & newQuantity>=0){
+
+        dispatch(updateCartItem(productId, newQuantity))
+      }else{
+        alert('sorry execded the stock')
+      }
     }
     const handleDelete = (productId)=>{
       dispatch(deleteCartItems(productId))
@@ -32,7 +38,7 @@ console.log(tamount,"here")
     <div className="mx-auto max-w-5xl justify-center px-6 md:flex md:space-x-6 xl:px-0">
       <div className="rounded-lg md:w-2/3">
         {products.map((product)=>{
-          console.log(product,"herer")
+          console.log(product,"herer hg")
             return(
                 <div key={product._id} className="justify-between mb-6 rounded-lg bg-white p-6 shadow-md sm:flex sm:justify-start">
           <img src={product?.product?.productImage} alt="product-image" className="w-full rounded-lg sm:w-40" />
@@ -43,9 +49,9 @@ console.log(tamount,"here")
             </div>
             <div className="mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6">
               <div className="flex items-center border-gray-100">
-                <span className="cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-blue-500 hover:text-blue-50" onClick={()=>handleQuantityChange(product.product._id, product.quantity - 1)}> - </span>
-                <input className="h-8 w-8 border bg-white text-center text-xs outline-none" type="number" value={product.quantity} min="1" onChange={(e)=>handleQuantityChange(product.product._id,e.target.value)}/>
-                <span className="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50" onClick={()=>handleQuantityChange(product.product._id, product.quantity + 1)}> + </span>
+                <span className="cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-blue-500 hover:text-blue-50" onClick={()=>handleQuantityChange(product.product._id,product.product, product.quantity - 1)}> - </span>
+                <input className="h-8 w-8 border bg-white text-center text-xs outline-none" type="number" value={product.quantity} min="1" onChange={(e)=>handleQuantityChange(product.product._id,product.product,e.target.value)}/>
+                <span className="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50" onClick={()=>handleQuantityChange(product.product._id,product.product, product.quantity + 1)}> + </span>
               </div>
               <div className="flex items-center space-x-4" onClick={()=>handleDelete(product.product._id)}>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="h-5 w-5 cursor-pointer duration-150 hover:text-red-500">
