@@ -1,66 +1,166 @@
-import { useEffect, useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import { forgotPassword } from "../../../store/authSlice"
-import { Link, useNavigate } from "react-router-dom"
-import { STATUSES } from "../../../globals/components/misc/statuses"
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { fetchProfile, logOut } from "../../../store/authSlice";
+import { fetchCartItems } from "../../../store/cartSlice";
 
-const ForgetPassword = () => {
-  const [email, setEmail] = useState("")
-  const navigate = useNavigate()
-  const { status, data } = useSelector((state) => state.auth)
-  const dispatch = useDispatch()
+const Navbar = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { items } = useSelector((state) => state.cart);
+  const { data: user } = useSelector((state) => state.auth);
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    dispatch(forgotPassword({ email }))
-  }
+  const [ShowTime, setShowTime] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // Toggle for mobile menu
 
   useEffect(() => {
-    if (status === STATUSES.SUCCESS) {
-      navigate("/verifyotp")
-    }
-  }, [status])
+    const handleScroll = () => {
+      if (window.pageYOffset > 300) {
+        setShowTime(true);
+      } else {
+        setShowTime(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const handleLogout = () => {
+    dispatch(logOut());
+    localStorage.removeItem("token");
+    navigate("/login");
+    setIsMenuOpen(false); // Close menu after logout
+  };
+
+  useEffect(() => {
+    dispatch(fetchCartItems());
+    dispatch(fetchProfile());
+  }, [dispatch]);
+
+  const handleNavigation = (path) => {
+    navigate(path);
+    setIsMenuOpen(false); // Close the menu after navigating
+  };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 to-purple-600">
-      <div className="w-full max-w-md px-4 py-8 mx-auto bg-white rounded-lg shadow-lg lg:max-w-lg">
-        <h3 className="mb-6 text-3xl font-semibold text-center text-gray-800">
-          Forgot Password
-        </h3>
-        <form className="space-y-6" onSubmit={handleSubmit}>
-          <div className="relative">
-            <label
-              className="block text-sm font-bold text-gray-700"
-              htmlFor="email"
+    <nav
+      className={`fixed top-0 z-10 w-full bg-white transition-all duration-500 ease-in-out ${
+        ShowTime ? "bg-opacity-100 shadow-lg" : "bg-opacity-20"
+      }`}
+    >
+      <div className="container mx-auto px-4 md:px-8 lg:px-16">
+        <div className="flex flex-wrap items-center justify-between py-3 gap-6 md:py-4 md:gap-0">
+          <div className="flex justify-between items-center w-full lg:w-auto">
+            <a
+              href="#"
+              aria-label="logo"
+              className="flex space-x-2 items-center"
+              onClick={() => handleNavigation("/")}
             >
-              Email
-            </label>
-            <input
-              className="w-full px-4 py-2 mt-2 text-sm text-gray-700 bg-gray-100 border border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-200"
-              id="email"
-              name="email"
-              onChange={(e) => setEmail(e.target.value)}
-              type="email"
-              placeholder="Enter your email"
-            />
-          </div>
+              <span className="text-2xl font-bold dark:text-blue-900">
+                TECH<span className="text-red-600">NEPAL</span>
+              </span>
+            </a>
 
-          <div className="text-center">
+            {/* Hamburger for mobile view */}
             <button
-              className="w-full px-4 py-2 text-lg font-bold text-white bg-blue-600 rounded-full hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50 transition ease-in-out duration-300"
+              aria-label="menu"
+              id="hamburger"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="lg:hidden block focus:outline-none"
             >
-              Send OTP
+              <span className="block w-6 h-0.5 bg-gray-800 mb-1"></span>
+              <span className="block w-6 h-0.5 bg-gray-800 mb-1"></span>
+              <span className="block w-6 h-0.5 bg-gray-800"></span>
             </button>
           </div>
-          <div className="text-center">
-            <Link to="/register" className="text-blue-600 hover:underline">
-              Register
-            </Link>
-          </div>
-        </form>
-      </div>
-    </div>
-  )
-}
 
-export default ForgetPassword
+          {/* Navigation Links */}
+          <div
+            className={`${
+              isMenuOpen ? "block" : "hidden"
+            } w-full lg:flex lg:items-center lg:w-auto space-y-6 lg:space-y-0 lg:space-x-6 lg:pl-4 transition-all duration-500 ease-in-out bg-white lg:bg-transparent`}
+          >
+            <ul className="flex flex-col lg:flex-row items-center text-sm font-medium space-y-4 lg:space-y-0 lg:space-x-8">
+              <li>
+                <a
+                  href="#"
+                  onClick={() => handleNavigation("/")}
+                  className="text-black hover:text-blue-700 transition-all"
+                >
+                  Home
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  onClick={() => handleNavigation("/product")}
+                  className="text-black hover:text-blue-700 transition-all"
+                >
+                  Products
+                </a>
+              </li>
+              {items.length !== 0 && (
+                <li>
+                  <a
+                    href="#"
+                    onClick={() => handleNavigation("/cart")}
+                    className="text-black hover:text-blue-700 transition-all"
+                  >
+                    Cart <sup className="text-red-500">{items.length}</sup>
+                  </a>
+                </li>
+              )}
+              {(user.length > 0 || localStorage.getItem("token")) && (
+                <li>
+                  <Link
+                    to="/profile"
+                    className="text-black hover:text-blue-700 transition-all"
+                    onClick={() => setIsMenuOpen(false)} // Close menu after navigating
+                  >
+                    Profile
+                  </Link>
+                </li>
+              )}
+            </ul>
+
+            {/* Auth Buttons */}
+            <div className="flex flex-col lg:flex-row items-center space-y-2 lg:space-y-0 lg:space-x-4 mt-6 lg:mt-0">
+              {user.length === 0 &&
+              (!localStorage.getItem("token") ||
+                localStorage.getItem("token") === "") ? (
+                <>
+                  <button
+                    onClick={() => handleNavigation("/register")}
+                    className="px-4 py-2 text-sm font-semibold text-white bg-blue-500 rounded-full hover:bg-blue-400 transition"
+                  >
+                    Register
+                  </button>
+                  <button
+                    onClick={() => handleNavigation("/login")}
+                    className="px-4 py-2 text-sm font-semibold text-gray-800 bg-gray-300 rounded-full hover:bg-gray-200 transition"
+                  >
+                    Login
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={handleLogout}
+                  className="px-4 py-2 text-sm font-semibold text-gray-800 bg-gray-300 rounded-full hover:bg-gray-200 transition"
+                >
+                  LogOut
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+  );
+};
+
+export default Navbar;

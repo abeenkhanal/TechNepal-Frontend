@@ -111,7 +111,7 @@ const Footer = () => {
             </div>
           </div>
 
-          <p className="font-sans p-8 text-start dark:text-black-500 md:text-center md:text-lg md:p-4">
+          <p className="font-sans p-8 text-start dark:text-black-500 md:text-center md:text-lg md:p-4  w-11-sm:w-12/12">
             © 2023 TECHNEPAL | All rights reserved.
           </p>
         </div>
