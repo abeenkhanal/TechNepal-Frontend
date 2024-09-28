@@ -39,7 +39,7 @@ const Checkout = () => {
           
        }  
       if(status === STATUSES.SUCCESS && paymentMethod === "Khalti" ){
-          const {totalAmount,_id:orderId} = data[data.length -1]
+          const {totalAmount,_id:orderId} = data[data.length -1] 
           
          handleKhalti(orderId,totalAmount)
       }
