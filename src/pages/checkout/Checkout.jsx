@@ -106,6 +106,7 @@ const Checkout = () => {
             <span className="mt-2 font-semibold">COD(Cash On Delivery)</span>
         
           </div>
+          
         </label>
       </div>
       <div className="relative">
