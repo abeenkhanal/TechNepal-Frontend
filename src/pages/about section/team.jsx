@@ -1,16 +1,17 @@
 import React from 'react'
+import Image from "../../../public/image/abeen.png"
 
 const Team = () => {
   const team = [
     {
       name: 'Abin Khanal',
       role: 'Fullstack Developer',
-      img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQznfsP1RKJTku2AIp03Yd67Crntwg2XdWADg&s', 
+      img: Image, 
     },
     {
       name: 'Ishwar Bohara',
       role: 'Frontend Developer',
-      img: 'https://images.pexels.com/photos/11098660/pexels-photo-11098660.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1', 
+      img: 'https://mercy.edu.np/wp-content/uploads/2024/03/ishwar-768x768.jpeg', 
     },
    
   ];
