@@ -184,7 +184,7 @@ const change_rating = (rating , cat) => {
             <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">{product?.productName}</h1>
             <div className="flex mb-4">
               <span className="flex items-center">
-                <Star rate={rating_state} change_rating={update_product_rating} cat={product?.productCategory} />
+                <Star rate={rating_state} change_rating={change_rating} cat={product?.productCategory} />
                 <span className="text-gray-600 ml-3">{rating_state}</span>
               </span>
             </div>
